@@ -1,0 +1,60 @@
+{
+  "name": "cloudflare-sql-runner",
+  "displayName": "cloudflare-sql-runner",
+  "publisher": "roncalw",
+  "description": "Runs SQL files against Cloudflare",
+  "version": "1.0.3",
+  "engines": {
+    "vscode": "^1.118.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cloudflareSqlRunner.runSqlFile",
+        "title": "Run Cloudflare SQL"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "cloudflareSqlRunner.runSqlFile",
+          "when": "resourceExtname == .sql",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Cloudflare SQL Runner",
+      "properties": {
+        "cloudflareSqlRunner.d1Database": {
+          "type": "string",
+          "default": "movieapp-db",
+          "description": "Cloudflare D1 database name or binding to use with wrangler d1 execute."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.118.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.56.1",
+    "eslint": "^9.39.3",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}

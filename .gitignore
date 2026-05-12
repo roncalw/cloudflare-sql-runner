@@ -1,0 +1,24 @@
+# dependencies
+node_modules/
+
+# packaged extension files
+*.vsix
+
+# compiled output
+out/
+dist/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# macOS
+.DS_Store
+
+# VS Code testing artifacts
+.vscode-test/
+
+# temporary files
+*.tmp
+*.temp
