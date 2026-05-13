@@ -1,11 +1,5 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-let terminal: vscode.Terminal | undefined;
-
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand(
     'cloudflareSqlRunner.runSqlFile',
@@ -15,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri)?.uri.fsPath;
+      const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
 
       if (!workspaceFolder) {
         vscode.window.showErrorMessage('Open a workspace folder first.');
@@ -35,24 +29,34 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      const scriptPath = context.asAbsolutePath('src/scripts/run-sql-remote.sh');
-
-      if (!terminal) {
-        terminal = vscode.window.createTerminal('Cloudflare SQL');
-      }
-
-      terminal.show();
-
-      terminal.sendText('clear');
-
-      terminal.sendText(
-        `zsh "${scriptPath}" "${workspaceFolder}" "${sqlFile}" "${d1Database}"`
+      const scriptPath = context.asAbsolutePath(
+        'src/scripts/run-sql-remote.sh'
       );
+
+      const task = new vscode.Task(
+        { type: 'cloudflareSqlRunner' },
+        workspaceFolder,
+        `Cloudflare SQL: ${uri.path.split('/').pop()}`,
+        'Cloudflare SQL Runner',
+        new vscode.ShellExecution(
+          `zsh "${scriptPath}" "${workspaceFolder.uri.fsPath}" "${sqlFile}" "${d1Database}"`
+        )
+      );
+
+      task.presentationOptions = {
+        reveal: vscode.TaskRevealKind.Always,
+        panel: vscode.TaskPanelKind.Dedicated,
+        clear: true,
+        echo: false,
+        focus: false,
+        showReuseMessage: false
+      };
+
+      await vscode.tasks.executeTask(task);
     }
   );
 
   context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}

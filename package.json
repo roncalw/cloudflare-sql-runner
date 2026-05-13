@@ -2,8 +2,13 @@
   "name": "cloudflare-sql-runner",
   "displayName": "cloudflare-sql-runner",
   "publisher": "roncalw",
+  "license": "MIT",
   "description": "Runs SQL files against Cloudflare",
-  "version": "1.0.3",
+  "version": "1.0.4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/roncalw/cloudflare-sql-runner.git"
+  },
   "engines": {
     "vscode": "^1.118.0"
   },
